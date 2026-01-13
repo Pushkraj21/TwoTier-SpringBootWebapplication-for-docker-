@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  student-app:
+    container_name: stud-cont
+    build: .
+    environment: 
+      - stu_db=student_db
+      - db_user=stud_user
+      - db_password=Pk@123
+    ports:
+      - "8080:8000" 
+    depends_on:
+      - mysql
+    networks:
+      - mynetwork
+
+  mysql:
+    container_name: mysql_db
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=test@123
+      - MYSQL_DATABASE=student_db
+      - MYSQL_USER=stud_user
+      - MYSQL_PASSWORD=Pk@123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+
+volumes:
+  mysql_data:
+
+networks:
+  mynetwork:
+    driver: bridge
